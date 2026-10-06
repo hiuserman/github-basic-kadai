@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -91,8 +92,8 @@ func main() {
 	for _, shape := range shapes {
 		err := validShape(shape)
 		if err != nil {
-			validationErr, ok := err.(*ValidationError)
-			if ok {
+			var validationErr *ValidationError
+			if errors.As(err, &validationErr) {
 				fmt.Printf("Validation Error: %s (Field: %s, Value: %f)\n", validationErr.Message, validationErr.Field, validationErr.Value)
 			} else {
 				fmt.Printf("Unexpected error: %v\n", err)
